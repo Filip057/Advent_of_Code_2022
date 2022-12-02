@@ -1,0 +1,70 @@
+
+
+def count_score(data):
+  with open (data, "r") as data:
+    strategy_guide = data.readlines()
+
+  formatted_games = []
+
+  for games in strategy_guide:
+    one_game = games.strip("\n").split(" ")
+    formatted_games.append(one_game)
+
+  # rock 0
+  # papper 1
+  # scissors 2
+
+  # indexes in nested lists in formatted games
+  opponent_move = 0
+  my_move = 1
+
+  # index [chosen enemy sign, draw, lose, win]
+  sign_choice = {
+    "A": [0, 0, 1, 2],
+    "B": [1, 1, 2, 0],
+    "C": [2, 2, 0, 1]
+  }
+
+  # indexs: to x lose 2, y draw 1 , z win 2
+  desired_outcomes = {
+    "X": 2,
+    "Y": 1,
+    "Z": 3
+  }
+
+  # point for my sign
+  sign = {
+    0: 1,
+    1: 2,
+    2: 3
+  }
+
+  total_score = 0
+
+  for game in formatted_games:
+    enemy_choice = sign_choice[game[opponent_move]][0]
+    my_choice = sign_choice[game[opponent_move]][desired_outcomes[game[my_move]]]
+
+    print(enemy_choice)
+    print(my_choice)
+
+    # draw
+    if my_choice == enemy_choice:
+      total_score = total_score + sign[my_choice] + 3
+    # my rock, enemy paper, i lose
+    elif my_choice == 0 and enemy_choice == 1:
+      total_score = total_score + sign[my_choice]
+    # my paper, enemy scissors, I lose
+    elif my_choice == 1 and enemy_choice == 2:
+      total_score = total_score + sign[my_choice]
+    # my scissors, enemy rock, I lose
+    elif my_choice == 2 and enemy_choice == 0:
+      total_score = total_score + sign[my_choice]
+    # all other cases I win
+    else:
+       total_score = total_score + sign[my_choice] + 6
+
+  return total_score
+
+
+count_score("game_plan.txt")

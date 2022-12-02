@@ -1,0 +1,56 @@
+
+
+def count_score(data):
+  with open (data, "r") as data:
+    strategy_guide = data.readlines()
+
+  formatted_games = []
+
+  for games in strategy_guide:
+    one_game = games.strip("\n").split(" ")
+    formatted_games.append(one_game)
+
+  # rock 0
+  # papper 1
+  # scissors 2
+
+  # indexes in nested lists in formatted games
+  opponent_move = 0
+  my_move = 1
+
+  opponent_moves = {
+    "A": 0,
+    "B": 1,
+    "C": 2
+  }
+
+  my_moves = {
+    "X": [0, 1],
+    "Y": [1, 2],
+    "Z": [2, 3]
+  }
+
+  total_score = 0
+
+  for game in formatted_games:
+    enemy_choice = opponent_moves[game[opponent_move]]
+    my_choice = my_moves[game[my_move]][0]
+
+    # draw
+    if my_choice == enemy_choice:
+      total_score = total_score + my_moves[game[my_move]][1] + 3
+    # my rock, enemy paper, i lose
+    elif my_choice == 0 and enemy_choice == 1:
+      total_score = total_score + my_moves[game[my_move]][1]
+    # my paper, enemy scissors, I lose
+    elif my_choice == 1 and enemy_choice == 2:
+      total_score = total_score + my_moves[game[my_move]][1]
+    # my scissors, enemy rock, I lose
+    elif my_choice == 2 and enemy_choice == 0:
+      total_score = total_score + my_moves[game[my_move]][1]
+    # all other cases I win
+    else:
+       total_score = total_score + my_moves[game[my_move]][1] + 6
+  return total_score
+
+print(count_score("game_plan.txt"))
